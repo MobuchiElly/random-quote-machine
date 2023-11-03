@@ -30,14 +30,14 @@ const RandomQuoteMachine = () => {
     fetchQuotes();
   }, [])
 
-  useEffect((quote) => {
-    getRandomQuote();
-    getRandomColor();
+  // useEffect((quote) => {
+  //   getRandomQuote();
+  //   getRandomColor();
   
-    return () => {
-      second
-    }
-  }, [quote])
+  //   return () => {
+  //     second
+  //   }
+  // }, [quote])
   
 
   const getRandomQuote = () => {
