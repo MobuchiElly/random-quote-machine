@@ -11,7 +11,7 @@ const RandomQuoteMachine = () => {
   const [data, setData] = useState([]);
   const [randomNum, setRandomNum] = useState(0)
   const [quote, setQuote] = useState('loading quote...............')
-  const [author, setAuthor] = useState('author')
+  const [author, setAuthor] = useState('')
   const [color, setColor] = useState('red')
   const [fadeIn, setFadeIn] = useState(false)
 
@@ -20,7 +20,10 @@ const RandomQuoteMachine = () => {
     const res = await axios.get('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json');
     const dataVal = res.data;
       setData(dataVal)
-    console.log(data);
+      setQuote(data.quotes[1]['quote']);
+      setAuthor(data.quotes[1]['author']);
+      console.log(data);
+
     } catch(err) {
       console.error('Error fetching data:', err);
     }
@@ -28,7 +31,7 @@ const RandomQuoteMachine = () => {
 
   useEffect(() => {
     fetchQuotes();
-  }, [])
+  }, [data])
 
   // useEffect((quote) => {
   //   getRandomQuote();
@@ -58,7 +61,7 @@ const RandomQuoteMachine = () => {
   }
 
   const setAll = () => {
-    setFadeIn(true);
+    //setFadeIn(true);
     getRandomColor();
     setTimeout(() => {
       getRandomQuote();
@@ -100,7 +103,7 @@ console.log(author);
           </div>
 
           {/* Animation needed here. opacity 0, 500 then opacity 1, 500 */}
-          <div className={`quote-author ${fadeIn ? 'fade-in' : ''} fade-in`} style={{color: `${color}`}}>- {author}<span id="author"></span></div>
+          <div className={`quote-author ${fadeIn ? 'fade-in' : ''}`} style={{color: `${color}`}}>- {author}<span id="author"></span></div>
 
           <div className="buttons">
             <a href={tweetURL}
