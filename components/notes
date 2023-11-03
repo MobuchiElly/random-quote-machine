@@ -1,0 +1,75 @@
+'use client'
+import React, { useEffect, useState } from 'react';
+import { FaTwitter, FaTumblr, FaQuoteLeft } from 'react-icons/fa';
+import axios from 'axios'; // Import Axios for data fetching
+
+const RandomQuoteMachine = () => {
+  const [quote, setQuote] = useState({});
+  const [colors] = useState([
+    '#16a085',
+    '#27ae60',
+    '#2c3e50',
+    '#f39c12',
+    '#e74c3c',
+    '#9b59b6',
+    '#FB6964',
+    '#342224',
+    '#472E32',
+    '#BDBB99',
+    '#77B1A9',
+    '#73A857',
+  ]);
+
+  useEffect(() => {
+    const fetchQuotes = async () => {
+      try {
+        const response = await axios.get(
+          'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json'
+        );
+        const quotes = response.data.quotes;
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+        setQuote(randomQuote);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchQuotes();
+  }, []);
+
+  const tweetURL = `https://twitter.com/intent/tweet?text="${quote.quote}" ${quote.author}`;
+
+  return (
+    <div id="wrapper">
+      <div id="quote-box">
+        <div className="quote-text">
+          <FaQuoteLeft />
+          <span id="text">{quote.quote}</span>
+        </div>
+        <div className="quote-author">- <span id="author">{quote.author}</span></div>
+        <div className="buttons">
+          <a className="button" id="tweet-quote" title="Tweet this quote!" href={tweetURL} target="_top">
+            <FaTwitter />
+          </a>
+          <a
+            className="button"
+            id="tumblr-quote"
+            title="Post this quote on tumblr!"
+            target="_blank"
+          >
+            <FaTumblr />
+          </a>
+          <button className="button" id="new-quote" onClick={fetchQuotes}>
+            New quote
+          </button>
+        </div>
+      </div>
+      <div className="footer">
+        by <a href="https://github.com/MobuchiElly">ellydev</a>
+      </div>
+    </div>
+  );
+};
+
+export default RandomQuoteMachine;
